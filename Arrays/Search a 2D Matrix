@@ -1,0 +1,80 @@
+class Solution {
+    /**
+    * What is given 
+    1. Matrix is sorted in ascending order for each row(not overall)
+    2. An element is given which is required to be searched
+    3. we need to tell if that element present in the matrix or not - boolean output
+    *
+    */
+    /**
+    Simplest solution is to search linearly
+    but as each row is sorted, we can do binary Search on each
+    */
+    public boolean searchMatrix(int[][] matrix, int target) {
+            
+            int min = 0;
+            int max = matrix.length-1;
+            
+            while(min<max){
+                int mid = min + (max-min)/2;
+                if(matrix[mid][0]<=target && matrix[mid][matrix[mid].length-1]>=target){ //reduces our search space to the lower part of matrix
+                    max = mid;
+                    min = mid;
+                    break;
+                }else{
+                    if(matrix[mid][0]>target){
+                        max = mid - 1;
+                    }else{
+                        min = mid + 1 ;     
+                    }
+                }
+            }
+            if(max==-1)return false;
+        
+            //Eventually min,max(both will have same value) and that will be the only row in
+            //which our target could exist;
+             if(Arrays.binarySearch(matrix[max],target)>-1){//<--this runs for log n    
+                return true;
+             }
+        return false;
+    }
+}
+//Lets try this!! :) Upss!! lets see where we went wrong.
+//Got it-- what went wrong -> we need to reduce search space each time but we are not doing that quite right
+
+
+
+//So overall O(m)*O(log n) TC -  definitely we can improve, how???
+
+//This was easy :) happy coding - But wait!!
+//Can we still optimize it
+//what is the TC of current solution - lets see
+
+
+//More intution
+/**
+We have to look into all rows, but can we just bypass some of the rows
+As we have rows sorted, we know first and last element
+if our element does not lie in that range we can definitely skip over that row
+Yeyy!!! lets try this
+
+As still over TC has not improved - Let's see how
+We definitely made some improvments, but we were intentionaly overlooking  one simple detail
+
+See as the outer loop is there and that goes for m times, we made some improvement but alas! TC did not change
+
+so now let's look at the detail which we missed and how can we make an improvement using that in our TC
+
+The first integer of each row is greater than the last integer of the previous row.==>
+that means it's not just row wise sorted, each column also will be having higher values than the previous one
+- think! what can we make out of this:)
+
+Instead of looping over all the rows , we can first choose which row we want to go in using Binary search -  as now we know what each row[0]th element is in sorted order.
+
+We can fetch the row in which our element/target "could" lie using Binary search
+
+Let's do this!!
+
+*/
+
+
