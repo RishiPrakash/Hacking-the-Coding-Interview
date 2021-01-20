@@ -1,0 +1,72 @@
+class Solution {
+    public int minSubArrayLen(int s, int[] nums) {
+        /**
+        Given - n positive integers array, positive interger s
+        required - contagious(continuous) subarray : Subarray is always contagious
+        condition sum of the elements of this subarray should be greater than or equal to s
+        One more thing : we need to return minimal length subarray in case more than one exists
+        
+        What could be the easiest solution 
+        find out all the subarrays and equate their sum against this condition<-
+        
+        if there are n elements in array
+        total number of subarrays would be n*(n+1)/2
+        Caution: if you are think about 2^n - that would be total number of subsequences
+        
+        so this would be n^2 solution
+        
+        Can we do better :) Yes we can. we can find out the soluton in O(n) time with 
+        Sliding window approch
+        
+        
+        To watch and learn => watch the video till the end and 
+        You have to subscribe to our channel. Only your support will take us forward.
+        
+        Great :) Let's disucss what is sliding window appraoch
+        
+        Let's see the window part first => means it's a bounded strucutre
+        Left_index till right_index
+        and sliding means -> it shrinks from left and it grows towards right
+        
+        to slide we do left_index++ and right_index++
+        
+        Say this is your array with some elemetns inside
+        [  ->->->->    ]
+        so first comes growing phase-->
+        that it slides
+        
+        Hope I was able to make you understand :) let's go over the implementation
+        find out the ones which are satisfying this condition
+        find out the min out of them
+        Hmm :) too much work
+        Let's see what is its complexity Time : 
+        
+        
+        What is the time complexity : let's see
+        //<--effectively n times
+        //O(n) T.C.
+        
+        Have to subscribe if we have made you learn something today :)
+        
+        */
+        
+        int left_index = 0;
+        int total_Sum_So_Far = 0;
+        int minmal_size_so_far = Integer.MAX_VALUE;
+        for(int right_index=0;right_index<nums.length;right_index++){
+            total_Sum_So_Far += nums[right_index];
+            while(total_Sum_So_Far>=s){//<--it may be possible that we need to shrink multiple elements
+                //to make our sum lower than s
+                //calcualting window size
+                minmal_size_so_far = Math.min(minmal_size_so_far, right_index-left_index+1); 
+                //now we need to shrink and expand
+                total_Sum_So_Far -= nums[left_index];
+                left_index++;
+                //Have to maintain the order of these two statements : else algo won't work
+            }
+        }
+        //added to handle the edge cases
+        return minmal_size_so_far<Integer.MAX_VALUE?minmal_size_so_far:0;
+        
+    }
+}
